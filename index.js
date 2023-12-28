@@ -64,6 +64,19 @@ async function run() {
         const result = await cartsCollection.findOne(filter)
         res.send(result)
     })
+    // cart quantity update 
+    app.put('/carts/:id',async(req,res)=>{
+        const id = req.params.id
+        const {quantity} = req.body
+        const filter = { _id : new ObjectId(id) };
+        const options = { upsert: true };
+        const updateDoc = {
+            $set: {
+              quantity:parseInt(quantity,10)
+            },
+          };
+          const result = await cartsCollection.updateOne(filter, updateDoc, options);
+    })
 
     // cart delete from cart 
     app.delete('/carts/:id',async(req,res)=>{
